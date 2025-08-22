@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KaitoKid.ArchipelagoUtilities.Net.CustomAssets", "KaitoKid.ArchipelagoUtilities.Net.CustomAssets\KaitoKid.ArchipelagoUtilities.Net.CustomAssets.csproj", "{35D71F00-61A3-45F6-8403-09A1ACD21236}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +28,10 @@ Global
 		{E80424B1-28BB-4369-997D-F568F67DFB81}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E80424B1-28BB-4369-997D-F568F67DFB81}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E80424B1-28BB-4369-997D-F568F67DFB81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35D71F00-61A3-45F6-8403-09A1ACD21236}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35D71F00-61A3-45F6-8403-09A1ACD21236}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35D71F00-61A3-45F6-8403-09A1ACD21236}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35D71F00-61A3-45F6-8403-09A1ACD21236}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

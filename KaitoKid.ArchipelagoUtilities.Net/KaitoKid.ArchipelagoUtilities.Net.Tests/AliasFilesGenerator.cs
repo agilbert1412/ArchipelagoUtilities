@@ -15,7 +15,7 @@ namespace KaitoKid.ArchipelagoUtilities.Net.Tests
         [Test]
         public void GenerateDefaultFileAliases()
         {
-            var path = @"..\..\..\..\KaitoKid.ArchipelagoUtilities.Net\Custom Assets\";
+            var path = @"..\..\..\..\KaitoKid.ArchipelagoUtilities.Net.CustomAssets\Custom Assets\";
             var subfolders = Directory.EnumerateDirectories(path, "*", SearchOption.TopDirectoryOnly).ToArray();
 
             foreach (var subfolderPath in subfolders)

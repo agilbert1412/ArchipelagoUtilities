@@ -43,10 +43,8 @@
 		</PackageReference>
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Content Update="Custom Assets\*\*">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Content>
+<!--    todo: Replace with nuget package-->
+	<ItemGroup> 
+	  <ProjectReference Include="..\KaitoKid.ArchipelagoUtilities.Net.CustomAssets\KaitoKid.ArchipelagoUtilities.Net.CustomAssets.csproj" />
 	</ItemGroup>
-
 </Project>

@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net452;netstandard2.0;net5.0;net6.0</TargetFrameworks>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <Authors>KaitoKid</Authors>
+        <AssemblyVersion>2.1.2</AssemblyVersion>
+        <FileVersion>2.1.2</FileVersion>
+        <Version>2.1.2</Version>
+        <Description>.NET library for Archipelago Utilities</Description>
+        <PackageProjectUrl>https://github.com/agilbert1412/ArchipelagoUtilities/blob/main/README.md</PackageProjectUrl>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <RepositoryUrl>https://github.com/agilbert1412/ArchipelagoUtilities</RepositoryUrl>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="..\..\README.md">
+          <Pack>True</Pack>
+          <PackagePath>\</PackagePath>
+          <Link>README.md</Link>
+        </None>
+        <None Include="..\.editorconfig" Link=".editorconfig" />
+        <Content Include="Custom Assets\**\*">
+            <Pack>true</Pack>
+            <PackageCopyToOutput>true</PackageCopyToOutput>
+        </Content>
+    </ItemGroup>
+    
+    <ItemGroup>
+        <Content Update="Custom Assets\*\*">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+</Project>

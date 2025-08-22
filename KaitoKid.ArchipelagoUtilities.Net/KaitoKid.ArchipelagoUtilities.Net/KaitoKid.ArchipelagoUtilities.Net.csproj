@@ -23,10 +23,6 @@
 			<PackagePath>\</PackagePath>
 		</None>
 		<None Include="..\.editorconfig" Link=".editorconfig" />
-		<Content Include="Custom Assets\**\*">
-			<Pack>true</Pack>
-			<PackageCopyToOutput>true</PackageCopyToOutput>
-		</Content>
 	</ItemGroup>
 	<ItemGroup Condition="$(TargetFramework.StartsWith('netcore'))">
 

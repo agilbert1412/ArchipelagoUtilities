@@ -1,6 +1,6 @@
 ﻿namespace KaitoKid.ArchipelagoUtilities.AssetDownloader
 {
-    public class Class1
+    public class AssetService
     {
 
     }

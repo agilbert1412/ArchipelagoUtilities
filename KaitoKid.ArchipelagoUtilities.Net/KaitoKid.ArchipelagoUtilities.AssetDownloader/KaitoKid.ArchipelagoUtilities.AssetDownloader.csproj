@@ -1,9 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
+	<Target Name="PostBuild" AfterTargets="Build">
+		<Message Text="Zipping all the assets" Importance="High" />
+		<Exec Command="if $(ConfigurationName) == Release (powershell -ExecutionPolicy Bypass -File &quot;$(ProjectDir)ZipAssets.ps1&quot; -projectDir &quot;$(ProjectDir)&quot;)" />
+	</Target>
 </Project>

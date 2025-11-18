@@ -1,9 +1,10 @@
 ﻿using Archipelago.MultiClient.Net.Enums;
 using System;
+using KaitoKid.ArchipelagoUtilities.AssetDownloader.ItemSprites;
 
 namespace KaitoKid.ArchipelagoUtilities.Net.Client
 {
-    public class ScoutedLocation
+    public class ScoutedLocation : IAssetLocation
     {
         private const string UNKNOWN_AP_ITEM = "Item for another world in this Archipelago";
 

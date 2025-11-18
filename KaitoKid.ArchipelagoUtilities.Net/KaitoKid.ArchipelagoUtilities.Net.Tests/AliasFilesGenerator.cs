@@ -1,4 +1,4 @@
-﻿using KaitoKid.ArchipelagoUtilities.Net.ItemSprites;
+﻿using KaitoKid.ArchipelagoUtilities.AssetDownloader.ItemSprites;
 using Newtonsoft.Json;
 
 namespace KaitoKid.ArchipelagoUtilities.Net.Tests
@@ -13,7 +13,7 @@ namespace KaitoKid.ArchipelagoUtilities.Net.Tests
         [Test]
         public void GenerateDefaultFileAliases()
         {
-            var path = @"..\..\..\..\KaitoKid.ArchipelagoUtilities.Net\Custom Assets\";
+            var path = @"..\..\..\..\KaitoKid.ArchipelagoUtilities.AssetDownloader\Assets\";
             var subfolders = Directory.EnumerateDirectories(path, "*", SearchOption.TopDirectoryOnly).ToArray();
 
             foreach (var subfolderPath in subfolders)

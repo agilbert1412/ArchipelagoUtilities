@@ -1,9 +1,6 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using KaitoKid.Utilities.Interfaces;
+﻿using KaitoKid.Utilities.Interfaces;
 
-namespace KaitoKid.ArchipelagoUtilities.Net.ItemSprites
+namespace KaitoKid.ArchipelagoUtilities.AssetDownloader.ItemSprites
 {
     public class ItemSprite
     {

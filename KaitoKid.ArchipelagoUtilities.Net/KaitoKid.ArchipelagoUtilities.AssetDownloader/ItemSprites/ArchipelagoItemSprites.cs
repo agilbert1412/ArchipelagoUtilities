@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using KaitoKid.ArchipelagoUtilities.Net.Client;
-using KaitoKid.Utilities.Interfaces;
+﻿using KaitoKid.Utilities.Interfaces;
 using Newtonsoft.Json;
 
-namespace KaitoKid.ArchipelagoUtilities.Net.ItemSprites
+namespace KaitoKid.ArchipelagoUtilities.AssetDownloader.ItemSprites
 {
     public class ArchipelagoItemSprites
     {
@@ -25,9 +20,7 @@ namespace KaitoKid.ArchipelagoUtilities.Net.ItemSprites
             var currentDirectory = Directory.GetCurrentDirectory();
             try
             {
-                _spritesFolder = Directory
-                    .EnumerateDirectories(currentDirectory, SPRITE_FOLDER_NAME, SearchOption.AllDirectories)
-                    .FirstOrDefault();
+                _spritesFolder = Directory.EnumerateDirectories(currentDirectory, SPRITE_FOLDER_NAME, SearchOption.AllDirectories).FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -36,6 +29,12 @@ namespace KaitoKid.ArchipelagoUtilities.Net.ItemSprites
             }
 
             LoadCustomSprites();
+        }
+
+        public bool HasSpritesForGame(string gameName)
+        {
+            var cleanGame = CleanName(gameName);
+            return _spritesByGame.ContainsKey(cleanGame) || _spritesByGameByItemName.ContainsKey(cleanGame);
         }
 
         private void LoadCustomSprites()
@@ -53,11 +52,15 @@ namespace KaitoKid.ArchipelagoUtilities.Net.ItemSprites
             var gameSubfolders = Directory.EnumerateDirectories(_spritesFolder, "*", SearchOption.TopDirectoryOnly).ToArray();
             foreach (var gameSubfolder in gameSubfolders)
             {
-                var aliases = GetAliases(gameSubfolder);
-
-                RegisterDirectSprites(gameSubfolder, out var gameName);
-                RegisterAliasSprites(aliases, gameName);
+                RegisterGameSprites(gameSubfolder);
             }
+        }
+
+        private void RegisterGameSprites(string gameSubfolder)
+        {
+            var aliases = GetAliases(gameSubfolder);
+            RegisterDirectSprites(gameSubfolder, out var gameName);
+            RegisterAliasSprites(aliases, gameName);
         }
 
         private ItemSpriteAliases GetAliases(string gameSubfolder)
@@ -78,6 +81,11 @@ namespace KaitoKid.ArchipelagoUtilities.Net.ItemSprites
             }
 
             return new ItemSpriteAliases();
+        }
+
+        private void RegisterDirectSprites(string spritesGameFolder)
+        {
+            RegisterDirectSprites(spritesGameFolder, out _);
         }
 
         private void RegisterDirectSprites(string spritesGameFolder, out string game)
@@ -140,7 +148,7 @@ namespace KaitoKid.ArchipelagoUtilities.Net.ItemSprites
             }
         }
 
-        public bool TryGetCustomAsset(ScoutedLocation scoutedLocation, string myGameName, bool fallbackOnDifferentGameAsset, bool fallbackOnGenericGameAsset, out ItemSprite sprite)
+        public bool TryGetCustomAsset(IAssetLocation scoutedLocation, string myGameName, bool fallbackOnDifferentGameAsset, bool fallbackOnGenericGameAsset, out ItemSprite sprite)
         {
             sprite = null;
             if (scoutedLocation == null)
@@ -158,6 +166,7 @@ namespace KaitoKid.ArchipelagoUtilities.Net.ItemSprites
                     return true;
                 }
             }
+
             if (fallbackOnDifferentGameAsset && _spritesByGameByItemName.TryGetValue(myGame, out var itemsInMyGame))
             {
                 if (itemsInMyGame.TryGetValue(item, out sprite))

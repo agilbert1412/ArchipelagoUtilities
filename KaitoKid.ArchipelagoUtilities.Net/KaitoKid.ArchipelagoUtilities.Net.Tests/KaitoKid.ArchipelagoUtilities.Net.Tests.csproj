@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\KaitoKid.ArchipelagoUtilities.AssetDownloader\KaitoKid.ArchipelagoUtilities.AssetDownloader.csproj" />
     <ProjectReference Include="..\KaitoKid.ArchipelagoUtilities.Net\KaitoKid.ArchipelagoUtilities.Net.csproj" />
   </ItemGroup>
 

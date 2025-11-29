@@ -2,11 +2,11 @@
 {
     public class AssetService
     {
-        private AssetDownloader _downloader;
+        private Downloader _downloader;
 
         public AssetService()
         {
-            _downloader = new AssetDownloader();
+            _downloader = new Downloader();
         }
 
 

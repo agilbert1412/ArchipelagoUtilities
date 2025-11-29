@@ -46,21 +46,27 @@ namespace KaitoKid.ArchipelagoUtilities.AssetDownloader
 
         public bool DownloadSpecificItemAsset(string game, string itemName)
         {
-            var assetName = $"{game}_{itemName}.png";
-            return DownloadSpecificAsset(game, assetName);
+            return DownloadSpecificItemAsset(game, itemName, out _);
         }
 
-        private bool DownloadSpecificAsset(string game, string assetName)
+        public bool DownloadSpecificItemAsset(string game, string itemName, out string fileName)
+        {
+            var assetName = $"{game}_{itemName}.png";
+            return DownloadSpecificAsset(game, assetName, out fileName);
+        }
+
+        private bool DownloadSpecificAsset(string game, string assetName, out string fileName)
         {
             try
             {
                 var filePath = Path.Combine(game, assetName);
                 var webPath = $"{Paths.WEB_DOWNLOAD_ASSETS}{game}/{assetName}";
-                var localPath = Path.Combine(Paths.CustomAssetsDirectory, filePath);
-                return DownloadFile(webPath, localPath);
+                fileName = Path.Combine(Paths.CustomAssetsDirectory, filePath);
+                return DownloadFile(webPath, fileName);
             }
             catch
             {
+                fileName = "";
                 return false;
             }
         }
@@ -69,10 +75,9 @@ namespace KaitoKid.ArchipelagoUtilities.AssetDownloader
         {
             try
             {
-                var fileInfo = new FileInfo(destinationPath);
-                if (!Directory.Exists(fileInfo.DirectoryName))
+                if (!Directory.Exists(Paths.CustomAssetsDirectory))
                 {
-                    Directory.CreateDirectory(fileInfo.DirectoryName);
+                    Directory.CreateDirectory(Paths.CustomAssetsDirectory);
                 }
                 using (var client = new WebClient())
                 {

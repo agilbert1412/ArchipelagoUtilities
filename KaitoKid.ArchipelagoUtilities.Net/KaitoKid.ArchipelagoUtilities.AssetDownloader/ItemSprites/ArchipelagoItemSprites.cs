@@ -9,11 +9,11 @@ namespace KaitoKid.ArchipelagoUtilities.AssetDownloader.ItemSprites
 {
     public class ArchipelagoItemSprites
     {
-        private const string SPRITE_FOLDER_NAME = "Custom Assets";
         public const string ALIASES_FILE_NAME = "aliases.json";
 
         private ILogger _logger;
         private NameCleaner _nameCleaner;
+        private AssetService _assetService;
         private string _spritesFolder;
         private Dictionary<string, List<ItemSprite>> _spritesByGame;
         private Dictionary<string, List<ItemSprite>> _spritesByItemName;
@@ -23,16 +23,8 @@ namespace KaitoKid.ArchipelagoUtilities.AssetDownloader.ItemSprites
         {
             _logger = logger;
             _nameCleaner = new NameCleaner();
-            var currentDirectory = Directory.GetCurrentDirectory();
-            try
-            {
-                _spritesFolder = Directory.EnumerateDirectories(currentDirectory, SPRITE_FOLDER_NAME, SearchOption.AllDirectories).FirstOrDefault();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(
-                    $"Could not scan subdirectories of '{currentDirectory}' to find item sprites. Error: {ex}");
-            }
+            _assetService = new AssetService();
+            _spritesFolder = Paths.CustomAssetsDirectory;
 
             LoadCustomSprites();
         }
@@ -62,7 +54,7 @@ namespace KaitoKid.ArchipelagoUtilities.AssetDownloader.ItemSprites
             }
         }
 
-        private void RegisterGameSprites(string gameSubfolder)
+        internal void RegisterGameSprites(string gameSubfolder)
         {
             var aliases = GetAliases(gameSubfolder);
             RegisterDirectSprites(gameSubfolder, out var gameName);
@@ -122,7 +114,7 @@ namespace KaitoKid.ArchipelagoUtilities.AssetDownloader.ItemSprites
             }
         }
 
-        private void RegisterSprite(string file, out string game)
+        internal void RegisterSprite(string file, out string game)
         {
             var sprite = new ItemSprite(_logger, file);
             RegisterSprite(sprite.Game, sprite.Item, sprite);
@@ -154,13 +146,21 @@ namespace KaitoKid.ArchipelagoUtilities.AssetDownloader.ItemSprites
             }
         }
 
+        public void PrepareGameAssets(string gameName)
+        {
+            _assetService.TryDownloadGameAssets(gameName, this, false);
+        }
+
         public bool TryGetCustomAsset(IAssetLocation scoutedLocation, string myGameName, bool fallbackOnDifferentGameAsset, bool fallbackOnGenericGameAsset, out ItemSprite sprite)
         {
+            _assetService.TryDownloadGameAssets(myGameName, this, true);
             sprite = null;
             if (scoutedLocation == null)
             {
                 return false;
             }
+
+            _assetService.TryDownloadGameAssets(scoutedLocation.GameName, this, true);
 
             var myGame = _nameCleaner.CleanName(myGameName);
             var game = _nameCleaner.CleanName(scoutedLocation.GameName);
@@ -172,6 +172,8 @@ namespace KaitoKid.ArchipelagoUtilities.AssetDownloader.ItemSprites
                     return true;
                 }
             }
+
+            _assetService.TryDownloadAsset(scoutedLocation.GameName, scoutedLocation.ItemName, this);
 
             if (fallbackOnDifferentGameAsset && _spritesByGameByItemName.TryGetValue(myGame, out var itemsInMyGame))
             {

@@ -1,5 +1,6 @@
 ﻿using Archipelago.MultiClient.Net.Enums;
 using FluentAssertions;
+using KaitoKid.ArchipelagoUtilities.AssetDownloader;
 using KaitoKid.ArchipelagoUtilities.AssetDownloader.ItemSprites;
 using KaitoKid.ArchipelagoUtilities.Net.Client;
 using KaitoKid.Utilities.Interfaces;
@@ -38,6 +39,7 @@ namespace KaitoKid.ArchipelagoUtilities.Net.Tests
             }
             _itemSprites = new ArchipelagoItemSprites(_logger);
             var scoutedLocation = new ScoutedLocation("", itemName, "", gameName, 1, 2, 3, ItemFlags.Advancement);
+            _itemSprites.PrepareGameAssets(gameName);
 
             // Act
             var success = _itemSprites.TryGetCustomAsset(scoutedLocation, "Stardew Valley", true, true, out var sprite);
@@ -58,6 +60,36 @@ namespace KaitoKid.ArchipelagoUtilities.Net.Tests
                     sprite.FilePath.Should().EndWith($@"Custom Assets\{gameName}\{expectedFilePath}");
                 }
             }
+        }
+
+        [TestCase("Balatro", "j_delayed_grat")]
+        public void TestMissingEntireGameDownloadsProperly(string gameName, string itemName)
+        {
+            // Arrange
+            _itemSprites = new ArchipelagoItemSprites(_logger);
+            var scoutedLocation = new ScoutedLocation("", itemName, "", gameName, 1, 2, 3, ItemFlags.Advancement);
+            var zipPath = Path.Combine(Paths.CustomAssetsDirectory, $"{gameName}.zip");
+            var folderPath = Path.Combine(Paths.CustomAssetsDirectory, gameName);
+            if (File.Exists(zipPath))
+            {
+                File.Delete(zipPath);
+            }
+
+            if (Directory.Exists(folderPath))
+            {
+                Directory.Delete(folderPath, true);
+            }
+
+            // Act
+            var attemptDownload = _itemSprites.TryGetCustomAsset(scoutedLocation, "Stardew Valley", false, true, out var sprite);
+
+            // Assert
+            Thread.Sleep(50);
+            File.Exists(zipPath).Should().BeTrue();
+            Directory.Exists(folderPath).Should().BeTrue();
+            var itemPath = Path.Combine(folderPath, $"{gameName}_{itemName}.png");
+            File.Exists(itemPath).Should().BeTrue();
+
         }
     }
 }

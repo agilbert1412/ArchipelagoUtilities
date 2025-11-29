@@ -2,7 +2,6 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>net452;netstandard2.0;net5.0;net6.0</TargetFrameworks>
-		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>disable</Nullable>
 	</PropertyGroup>
 
@@ -14,7 +13,7 @@
 
 	<Target Name="PostBuild" AfterTargets="Build">
 		<Message Text="Zipping all the assets" Importance="High" />
-		<Exec Command="if $(ConfigurationName) == Release (powershell -ExecutionPolicy Bypass -File &quot;$(ProjectDir)ZipAssets.ps1&quot; -projectDir &quot;$(ProjectDir)&quot;)" />
+		<Exec Command="if $(Configuration) == Release (powershell -ExecutionPolicy Bypass -File &quot;$(ProjectDir)ZipAssets.ps1&quot; -projectDir &quot;$(ProjectDir)&quot;)" />
 	</Target>
 
 	<ItemGroup>
@@ -23,5 +22,9 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\KaitoKid.Utilities.Interfaces\KaitoKid.Utilities.Interfaces.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="NewFolder\" />
 	</ItemGroup>
 </Project>

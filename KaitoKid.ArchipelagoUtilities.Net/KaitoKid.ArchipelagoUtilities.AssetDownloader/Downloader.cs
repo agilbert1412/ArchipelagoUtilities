@@ -1,10 +1,19 @@
-﻿using System.IO.Compression;
+﻿using System;
+using System.IO;
+using System.IO.Compression;
 using System.Net;
 
 namespace KaitoKid.ArchipelagoUtilities.AssetDownloader
 {
     public class Downloader
     {
+        private NameCleaner _nameCleaner;
+
+        public Downloader()
+        {
+            _nameCleaner = new NameCleaner();
+        }
+
         public bool DownloadGameZip(string game)
         {
             try
@@ -26,8 +35,7 @@ namespace KaitoKid.ArchipelagoUtilities.AssetDownloader
             {
                 var zipName = $"{game}.zip";
                 var zipFile = Path.Combine(Paths.CustomAssetsDirectory, zipName);
-                var gameFolder = Path.Combine(Paths.CustomAssetsDirectory, game);
-                ZipFile.ExtractToDirectory(zipFile, gameFolder);
+                ZipFile.ExtractToDirectory(zipFile, Paths.CustomAssetsDirectory);
                 return true;
             }
             catch
@@ -36,7 +44,13 @@ namespace KaitoKid.ArchipelagoUtilities.AssetDownloader
             }
         }
 
-        public bool DownloadSpecificAsset(string game, string assetName)
+        public bool DownloadSpecificItemAsset(string game, string itemName)
+        {
+            var assetName = $"{game}_{itemName}.png";
+            return DownloadSpecificAsset(game, assetName);
+        }
+
+        private bool DownloadSpecificAsset(string game, string assetName)
         {
             try
             {
@@ -55,6 +69,11 @@ namespace KaitoKid.ArchipelagoUtilities.AssetDownloader
         {
             try
             {
+                var fileInfo = new FileInfo(destinationPath);
+                if (!Directory.Exists(fileInfo.DirectoryName))
+                {
+                    Directory.CreateDirectory(fileInfo.DirectoryName);
+                }
                 using (var client = new WebClient())
                 {
                     client.Credentials = CredentialCache.DefaultNetworkCredentials;

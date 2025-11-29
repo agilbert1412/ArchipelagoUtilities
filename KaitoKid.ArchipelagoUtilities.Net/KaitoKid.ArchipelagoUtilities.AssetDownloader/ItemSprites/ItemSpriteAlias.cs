@@ -1,4 +1,6 @@
-﻿namespace KaitoKid.ArchipelagoUtilities.AssetDownloader.ItemSprites
+﻿using System.Collections.Generic;
+
+namespace KaitoKid.ArchipelagoUtilities.AssetDownloader.ItemSprites
 {
     public class ItemSpriteAlias
     {

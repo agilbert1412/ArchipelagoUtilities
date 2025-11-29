@@ -103,7 +103,7 @@ namespace KaitoKid.ArchipelagoUtilities.Net.Client
         {
             unchecked
             {
-                var seed = 7l;
+                var seed = 7L;
                 seed = (seed * 13) + LocationId;
                 seed = (seed * 13) + ItemId;
                 seed = (seed * 13) + PlayerId;

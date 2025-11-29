@@ -1,5 +1,9 @@
-﻿using KaitoKid.Utilities.Interfaces;
+﻿using System;
+using KaitoKid.Utilities.Interfaces;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace KaitoKid.ArchipelagoUtilities.AssetDownloader.ItemSprites
 {
@@ -9,6 +13,7 @@ namespace KaitoKid.ArchipelagoUtilities.AssetDownloader.ItemSprites
         public const string ALIASES_FILE_NAME = "aliases.json";
 
         private ILogger _logger;
+        private NameCleaner _nameCleaner;
         private string _spritesFolder;
         private Dictionary<string, List<ItemSprite>> _spritesByGame;
         private Dictionary<string, List<ItemSprite>> _spritesByItemName;
@@ -17,6 +22,7 @@ namespace KaitoKid.ArchipelagoUtilities.AssetDownloader.ItemSprites
         public ArchipelagoItemSprites(ILogger logger)
         {
             _logger = logger;
+            _nameCleaner = new NameCleaner();
             var currentDirectory = Directory.GetCurrentDirectory();
             try
             {
@@ -33,7 +39,7 @@ namespace KaitoKid.ArchipelagoUtilities.AssetDownloader.ItemSprites
 
         public bool HasSpritesForGame(string gameName)
         {
-            var cleanGame = CleanName(gameName);
+            var cleanGame = _nameCleaner.CleanName(gameName);
             return _spritesByGame.ContainsKey(cleanGame) || _spritesByGameByItemName.ContainsKey(cleanGame);
         }
 
@@ -104,8 +110,8 @@ namespace KaitoKid.ArchipelagoUtilities.AssetDownloader.ItemSprites
             {
                 foreach (var aliasItemName in alias.ItemNames)
                 {
-                    var cleanGame = CleanName(gameName);
-                    var cleanAliasName = CleanName(alias.AliasName);
+                    var cleanGame = _nameCleaner.CleanName(gameName);
+                    var cleanAliasName = _nameCleaner.CleanName(alias.AliasName);
                     if (_spritesByGameByItemName.ContainsKey(cleanGame) &&
                         _spritesByGameByItemName[cleanGame].ContainsKey(cleanAliasName))
                     {
@@ -125,8 +131,8 @@ namespace KaitoKid.ArchipelagoUtilities.AssetDownloader.ItemSprites
 
         private void RegisterSprite(string game, string item, ItemSprite sprite)
         {
-            var cleanGame = CleanName(game);
-            var cleanItem = CleanName(item);
+            var cleanGame = _nameCleaner.CleanName(game);
+            var cleanItem = _nameCleaner.CleanName(item);
             if (!_spritesByGame.ContainsKey(cleanGame))
             {
                 _spritesByGame.Add(cleanGame, new List<ItemSprite>());
@@ -156,9 +162,9 @@ namespace KaitoKid.ArchipelagoUtilities.AssetDownloader.ItemSprites
                 return false;
             }
 
-            var myGame = CleanName(myGameName);
-            var game = CleanName(scoutedLocation.GameName);
-            var item = CleanName(scoutedLocation.ItemName);
+            var myGame = _nameCleaner.CleanName(myGameName);
+            var game = _nameCleaner.CleanName(scoutedLocation.GameName);
+            var item = _nameCleaner.CleanName(scoutedLocation.ItemName);
             if (_spritesByGameByItemName.TryGetValue(game, out var itemsInCorrectGame))
             {
                 if (itemsInCorrectGame.TryGetValue(item, out sprite))
@@ -192,23 +198,6 @@ namespace KaitoKid.ArchipelagoUtilities.AssetDownloader.ItemSprites
             }
 
             return false;
-        }
-
-        public string CleanName(string name)
-        {
-            if (name == null)
-            {
-                return string.Empty;
-            }
-
-            var charsToIgnore = new string[] { " ", "_", ":", "'" };
-            name = name.ToLower();
-            foreach (var charToIgnore in charsToIgnore)
-            {
-                name = name.Replace(charToIgnore, "");
-            }
-
-            return name;
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿using KaitoKid.Utilities.Interfaces;
+﻿using System;
+using System.IO;
+using System.Linq;
+using KaitoKid.Utilities.Interfaces;
 
 namespace KaitoKid.ArchipelagoUtilities.AssetDownloader.ItemSprites
 {

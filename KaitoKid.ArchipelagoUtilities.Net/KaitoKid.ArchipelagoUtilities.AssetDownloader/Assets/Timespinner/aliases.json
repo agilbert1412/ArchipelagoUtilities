@@ -1,0 +1,59 @@
+{
+  "Aliases": [
+    {
+      "AliasName": "Demon",
+      "ItemNames": [
+        "Lab Access Experiment"
+      ]
+    },
+    {
+      "AliasName": "Eye Orb",
+      "ItemNames": [
+        "Lab Access Dynamo"
+      ]
+    },
+    {
+      "AliasName": "Historical Documents",
+      "ItemNames": [
+        "PlaceHolderItem1",
+        "Laser Access A",
+        "Laser Access I",
+        "Laser Access M"
+      ]
+    },
+    {
+      "AliasName": "Lab Coat",
+      "ItemNames": [
+        "Lab Access Research"
+      ]
+    },
+    {
+      "AliasName": "Lab Glasses",
+      "ItemNames": [
+        "Lab Access Genza"
+      ]
+    },
+    {
+      "AliasName": "Traps",
+      "ItemNames": [
+        "Meteor Sparrow Trap",
+        "Poison Trap",
+        "Chaos Trap",
+        "Neurotoxin Trap",
+        "Bee Trap",
+        "Throw Stun Trap",
+        "Spider Trap",
+        "Lights Out Trap",
+        "Palm Punch Trap"
+      ]
+    },
+    {
+      "AliasName": "Twin Pyramid Key",
+      "ItemNames": [
+        "Modern Warp Beacon",
+        "Timeworn Warp Beacon",
+        "Mysterious Warp Beacon"
+      ]
+    }
+  ]
+}

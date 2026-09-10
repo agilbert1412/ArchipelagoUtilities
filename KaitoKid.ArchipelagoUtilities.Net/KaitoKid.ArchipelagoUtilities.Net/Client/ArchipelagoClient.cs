@@ -598,6 +598,38 @@ namespace KaitoKid.ArchipelagoUtilities.Net.Client
             return locationId;
         }
 
+        public bool ItemExists(string itemName)
+        {
+            if (itemName == null || !MakeSureConnected())
+            {
+                return false;
+            }
+
+            var id = GetItemId(itemName);
+            return id >= 1;
+        }
+
+        public long GetItemId(string itemName)
+        {
+            return GetItemId(itemName, GameName);
+        }
+
+        public long GetItemId(string itemName, string gameName)
+        {
+            if (!MakeSureConnected())
+            {
+                return LocalDataPackage.GetLocalItemId(itemName);
+            }
+
+            //var itemId = _session.Items.GetItemId();
+            //if (itemId <= 0)
+            //{
+            var itemId = LocalDataPackage.GetLocalItemId(itemName);
+            // }
+
+            return itemId;
+        }
+
         public string GetItemName(ItemInfo item)
         {
             return item?.ItemName ?? GetItemName(item.ItemId);

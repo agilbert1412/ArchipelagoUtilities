@@ -7,27 +7,23 @@ Add-Type -AssemblyName System.IO.Compression.FileSystem
 
 Write-Host "projectDir = |$projectDir|"
 
-# Normalize trailing slash
+# Remove all trailing separators
 $projectDir = $projectDir.TrimEnd('\')
 $projectDir = $projectDir.TrimEnd('/')
 $projectDir = $projectDir.TrimEnd('"')
 
-# Path to the Assets folder, relative or absolute
 $assetsPath = Join-Path $projectDir "Assets"
-
-# Path where the ZIP files should be written
 $outputPath = Join-Path $projectDir "ZippedAssets"
 
 Write-Host "projectDir = |$projectDir|"
 Write-Host "assetsPath = |$assetsPath|"
 Write-Host "outputPath = |$outputPath|"
 
-# Ensure the output folder exists
+# Create the output folder
 if (!(Test-Path $outputPath)) {
     New-Item -ItemType Directory -Path $outputPath | Out-Null
 }
 
-# Get all immediate subfolders of Assets
 $subfolders = Get-ChildItem -Path $assetsPath -Directory
 
 foreach ($folder in $subfolders) {
@@ -39,22 +35,20 @@ foreach ($folder in $subfolders) {
 	Write-Host "zipName = |$zipName|"
 	Write-Host "zipPath = |$zipPath|"
 
-    # If a ZIP already exists, delete it (optional but recommended)
+    # Delete existing files
     if (Test-Path $zipPath) {
         Remove-Item $zipPath
     }
 
-    # Create ZIP with POSIX-style separators
+    # This uses System.IO.Compression to get proper forward slashes as separators, not windows-exclusive backslashes
 	$zip = [System.IO.Compression.ZipFile]::Open($zipPath, [System.IO.Compression.ZipArchiveMode]::Create)
 
 	try {
 		$files = Get-ChildItem -Path $folderPath -Recurse -File
 
 		foreach ($file in $files) {
-			# Relative path inside the zip
 			$relativePath = $file.FullName.Substring($folderPath.Length + 1)
 
-			# ZIP format expects forward slashes
 			$entryName = $relativePath.Replace('\', '/')
 			$entryName = "$($folder.Name)/$($entryName)"
 

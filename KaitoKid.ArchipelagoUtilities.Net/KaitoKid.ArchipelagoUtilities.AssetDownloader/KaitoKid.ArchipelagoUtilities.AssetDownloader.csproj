@@ -5,7 +5,7 @@
 		<Nullable>disable</Nullable>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Authors>KaitoKid</Authors>
-        <Version>3.1.15</Version>
+        <Version>3.1.16</Version>
         <AssemblyVersion>$(Version)</AssemblyVersion>
         <FileVersion>$(Version)</FileVersion>
 		<Description>.NET library for Archipelago Item Sprites</Description>

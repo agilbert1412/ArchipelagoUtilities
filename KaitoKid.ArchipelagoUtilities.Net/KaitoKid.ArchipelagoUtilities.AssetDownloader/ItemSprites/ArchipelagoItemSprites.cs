@@ -160,17 +160,25 @@ namespace KaitoKid.ArchipelagoUtilities.AssetDownloader.ItemSprites
             _assetService.TryDownloadGameAssets(gameName, this, false);
         }
 
-        /// <param name="myGameName">The name of the game you are modding.</param>
+        /// <summary>
+        /// Tries to get an appropriate custom asset for a specific scouted location
+        /// </summary>
+        /// <param name="scoutedLocation">The scout information of the location and item to get an asset for</param>
+        /// <param name="myGameName">The name of the game you are modding</param>
         /// <param name="fallbackOnDifferentGameAsset">if this is true then:
         ///- it will try to get a sprite from `myGameName` that matches the item name if the game the location is from doesn't have an asset
         ///- if that fails, it will try to get a random sprite from any game that matches the item name
         /// </param>
-        /// <param name="fallbackOnGenericGameAsset">it will get the default sprite of the game the location is from, if the game doesn't have an asset that matches</param>
+        /// <param name="fallbackOnGenericGameAsset">If true, then will get the default sprite of the game the location is from, if the game doesn't have an asset that matches</param>
+        /// <param name="sprite">The obtained asset, if applicable</param>
+        /// <param name="async">If something needs to be downloaded, whether to download it asynchronously or block.
+        /// If async, then this specific call might not find the asset yet, but it'll be there in the future.
+        /// If sync, then this specific call might take a long time to finish and block the thread, because it'll wait for the download to complete, to be able to use the resulting files.</param>
         /// <returns>bool - true if the function succeeded, false if failed</returns>
-        public bool TryGetCustomAsset(IAssetLocation scoutedLocation, string myGameName, bool fallbackOnDifferentGameAsset, bool fallbackOnGenericGameAsset, out ItemSprite sprite)
+        public bool TryGetCustomAsset(IAssetLocation scoutedLocation, string myGameName, bool fallbackOnDifferentGameAsset, bool fallbackOnGenericGameAsset, out ItemSprite sprite, bool async = true)
         {
             var myGame = _nameCleaner.RemoveIllegalCharacters(myGameName);
-            _assetService.TryDownloadGameAssets(myGame, this, true);
+            _assetService.TryDownloadGameAssets(myGame, this, async);
             sprite = null;
             if (scoutedLocation == null)
             {
@@ -178,7 +186,7 @@ namespace KaitoKid.ArchipelagoUtilities.AssetDownloader.ItemSprites
             }
 
             var game = _nameCleaner.RemoveIllegalCharacters(scoutedLocation.GameName);
-            _assetService.TryDownloadGameAssets(game, this, true);
+            _assetService.TryDownloadGameAssets(game, this, async);
 
             var cleanMyGame = _nameCleaner.CleanName(myGameName);
             var cleanScoutedGame = _nameCleaner.CleanName(scoutedLocation.GameName);
